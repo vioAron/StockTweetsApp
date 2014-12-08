@@ -5,7 +5,7 @@
         Title="FollowingWindow" Height="554.082" Width="661.224"
         Loaded="FollowingWindow_OnLoaded">
     <Window.DataContext>
-        <viewModel:TweetViewModel/>
+        <viewModel:TweetsViewModel/>
     </Window.DataContext>
     <Grid>
         <DataGrid HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Stretch" ItemsSource="{Binding Tweets}"/>

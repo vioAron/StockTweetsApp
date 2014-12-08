@@ -81,13 +81,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\SearchInstrumentsClickedCommand.cs" />
+    <Compile Include="ViewModel\WatchedInstrumentsViewModel.cs" />
     <Compile Include="View\TweetsWindow.xaml.cs">
       <DependentUpon>TweetsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SharedState.cs" />
     <Compile Include="ViewModel\FollowingViewModel.cs" />
     <Compile Include="ViewModel\Tweet.cs" />
-    <Compile Include="ViewModel\TweetViewModel.cs" />
+    <Compile Include="ViewModel\TweetsViewModel.cs" />
+    <Compile Include="View\WatchedInstruments.xaml.cs">
+      <DependentUpon>WatchedInstruments.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\TweetsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -104,15 +109,12 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\OAuth.xaml">
+    <Page Include="View\WatchedInstruments.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="View\OAuth.xaml.cs">
-      <DependentUpon>OAuth.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

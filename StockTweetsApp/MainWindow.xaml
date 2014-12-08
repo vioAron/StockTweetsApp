@@ -5,8 +5,8 @@
         Loaded="MainWindow_OnLoaded">
     <Grid>
         <StackPanel>
-            <Button Name="ConnectButton" Click="ConnectButton_OnClick" Width="75" Height="30"/>
             <Button Content="Button" Width="75" Click="Button_Click"/>
+            <Button Content="WatchedInstruments" Width="150" Name="WatchedInstrumentsButton" Click="WatchedInstrumentsButton_OnClick"/>
         </StackPanel>
     </Grid>
 </Window>

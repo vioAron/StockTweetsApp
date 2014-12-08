@@ -2,11 +2,11 @@
 
 namespace StockTweetsApp.ViewModel
 {
-    public class TweetViewModel
+    public class TweetsViewModel
     {
         public ObservableCollection<Tweet> Tweets { get; set; }
 
-        public TweetViewModel()
+        public TweetsViewModel()
         {
             Tweets = new ObservableCollection<Tweet>();
         }        

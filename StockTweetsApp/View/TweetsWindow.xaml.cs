@@ -31,7 +31,7 @@ namespace StockTweetsApp.View
                  })
                 .ToListAsync();
 
-            var tweetCollection = ((TweetViewModel) DataContext).Tweets;
+            var tweetCollection = ((TweetsViewModel) DataContext).Tweets;
             tweetCollection.Clear();
             tweets.ForEach(tweetCollection.Add);
         }

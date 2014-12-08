@@ -1,0 +1,20 @@
+﻿<Window x:Class="StockTweetsApp.View.WatchedInstruments"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModel="clr-namespace:StockTweetsApp.ViewModel"
+        Title="WatchedInstruments" Height="587" Width="487.4">
+    <Window.DataContext>
+        <viewModel:WatchedInstrumentsViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <TextBox Name="txtSearch" Height="20" Text="{Binding SearchText}"/>
+            <Button Name="SearchButton" Height="20" Width="90" Content="Search" Command="{Binding SearchInstrumentsClickedCommand}" CommandParameter="{Binding}" />
+        </StackPanel>
+        <DataGrid Grid.Row="1" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="5" VerticalAlignment="Stretch" ItemsSource="{Binding Tweets}"/>
+    </Grid>
+</Window>
