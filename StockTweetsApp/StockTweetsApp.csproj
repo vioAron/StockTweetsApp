@@ -82,7 +82,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command\SearchInstrumentsClickedCommand.cs" />
+    <Compile Include="ViewModel\PopularInstrumentsViewModel.cs" />
     <Compile Include="ViewModel\WatchedInstrumentsViewModel.cs" />
+    <Compile Include="View\PopularInstrumentsWindow.xaml.cs">
+      <DependentUpon>PopularInstrumentsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TweetsWindow.xaml.cs">
       <DependentUpon>TweetsWindow.xaml</DependentUpon>
     </Compile>
@@ -93,6 +97,10 @@
     <Compile Include="View\WatchedInstruments.xaml.cs">
       <DependentUpon>WatchedInstruments.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\PopularInstrumentsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\TweetsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

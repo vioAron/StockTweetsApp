@@ -1,0 +1,8 @@
+﻿<Window x:Class="StockTweetsApp.View.PopularInstrumentsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PopularInstrumentsWindow" Height="393.134" Width="571.045">
+    <Grid>
+
+    </Grid>
+</Window>
