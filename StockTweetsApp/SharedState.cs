@@ -2,7 +2,7 @@
 
 namespace StockTweetsApp
 {
-    class SharedState
+    public class SharedState
     {
         public static IAuthorizer Authorizer { get; set; }
     }

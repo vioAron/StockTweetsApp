@@ -17,6 +17,7 @@ namespace StockTweetsApp
 
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
+            IsEnabled = false;
             var auth = new ApplicationOnlyAuthorizer
             {
                 CredentialStore = new InMemoryCredentialStore
@@ -27,6 +28,7 @@ namespace StockTweetsApp
             };
 
             await auth.AuthorizeAsync();
+            IsEnabled = true;
             SharedState.Authorizer = auth;
         }
 

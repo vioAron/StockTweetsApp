@@ -13,7 +13,10 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
             <TextBox Name="txtSearch" Height="20" Text="{Binding SearchText}"/>
-            <Button Name="SearchButton" Height="20" Width="90" Content="Search" Command="{Binding SearchInstrumentsClickedCommand}" CommandParameter="{Binding}" />
+            <StackPanel Orientation="Horizontal">
+                <Button Name="SearchButton" Height="20" Width="90" Content="Search" Command="{Binding SearchInstrumentsClickedCommand}" CommandParameter="{Binding}" />
+                <Button Name="SearchManyButton" Height="20" Width="90" Content="SearchMany" Command="{Binding SearchManyTweetsClickedCommand}" CommandParameter="{Binding}" />
+            </StackPanel>
         </StackPanel>
         <DataGrid Grid.Row="1" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="5" VerticalAlignment="Stretch" ItemsSource="{Binding Tweets}"/>
     </Grid>
