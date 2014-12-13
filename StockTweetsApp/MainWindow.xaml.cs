@@ -1,6 +1,10 @@
 ﻿using System.Configuration;
+using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
+using System.Threading.Tasks;
 using System.Windows;
 using LinqToTwitter;
+using StockTweetsApp.Repository;
 using StockTweetsApp.View;
 
 namespace StockTweetsApp
@@ -28,14 +32,11 @@ namespace StockTweetsApp
             };
 
             await auth.AuthorizeAsync();
-            IsEnabled = true;
             SharedState.Authorizer = auth;
-        }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var window = new FollowingWindow();
-            window.Show();
+            await Task.Run(() => TwitterFeedsService.Instance.LoadCache());
+
+            IsEnabled = true;
         }
 
         private void WatchedInstrumentsButton_OnClick(object sender, RoutedEventArgs e)

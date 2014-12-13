@@ -83,26 +83,20 @@
     </ApplicationDefinition>
     <Compile Include="Command\SearchInstrumentsClickedCommand.cs" />
     <Compile Include="Command\SearchManyTweetsClickedCommand.cs" />
+    <Compile Include="Model\InstrumentTweets.cs" />
+    <Compile Include="Repository\TwitterFeedsService.cs" />
     <Compile Include="ViewModel\PopularInstrumentsViewModel.cs" />
     <Compile Include="ViewModel\WatchedInstrumentsViewModel.cs" />
     <Compile Include="View\PopularInstrumentsWindow.xaml.cs">
       <DependentUpon>PopularInstrumentsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TweetsWindow.xaml.cs">
-      <DependentUpon>TweetsWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="SharedState.cs" />
-    <Compile Include="ViewModel\FollowingViewModel.cs" />
     <Compile Include="ViewModel\Tweet.cs" />
     <Compile Include="ViewModel\TweetsViewModel.cs" />
     <Compile Include="View\WatchedInstruments.xaml.cs">
       <DependentUpon>WatchedInstruments.xaml</DependentUpon>
     </Compile>
     <Page Include="View\PopularInstrumentsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\TweetsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -151,9 +145,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

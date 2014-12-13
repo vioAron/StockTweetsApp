@@ -5,7 +5,6 @@
         Loaded="MainWindow_OnLoaded">
     <Grid>
         <StackPanel>
-            <Button Content="Button" Width="75" Click="Button_Click"/>
             <Button Content="WatchedInstruments" Width="150" Name="WatchedInstrumentsButton" Click="WatchedInstrumentsButton_OnClick"/>
         </StackPanel>
     </Grid>

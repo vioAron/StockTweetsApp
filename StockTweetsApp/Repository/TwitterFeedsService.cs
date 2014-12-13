@@ -3,41 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using LinqToTwitter;
-using StockTweetsApp;
+using StockTweetsApp.Model;
 using StockTweetsApp.ViewModel;
 
-namespace ulbuzz.core.services
+namespace StockTweetsApp.Repository
 {
-    public class TwitterFeedsServiceImpl : TwitterFeedsService
+    public class TwitterFeedsService
     {
-        private readonly DeskLog _logger = Framework.Services.Get<LogService>().Logger<TwitterFeedsServiceImpl>();
+        private static readonly Lazy<TwitterFeedsService> _lazyInstance = new Lazy<TwitterFeedsService>();
         private readonly TwitterContext _twitterCtx;
         private readonly Dictionary<string, ulong> _sinceIds = new Dictionary<string, ulong>();
         public IEnumerable<InstrumentTweets> InstrumentTweetsCache = new List<InstrumentTweets>();
 
         public IEnumerable<string> DefaultIntruments = new List<string> { "$BNP", "$VOD", "$AAPL", "$MSFT" };
 
-        public TwitterFeedsServiceImpl()
+        private const int NumberOfDays = 2;
+
+        public TwitterFeedsService()
         {
-            TwitterAuthorizer.TwitterAuth();
-
             _twitterCtx = new TwitterContext(SharedState.Authorizer);
-
-            _logger.Info("Instrument tweets cache started!");
-
-            LoadCache();
-
-            _logger.Info("Instrument tweets cache ended!");
         }
 
-        public override IEnumerable<Tweet> GetTweets(string instrumentId, int numberOfDays = NumberOfDays)
+        public static TwitterFeedsService Instance
+        {
+            get { return _lazyInstance.Value; }
+        }
+
+        public IEnumerable<Tweet> GetTweets(string instrumentId, int numberOfDays = NumberOfDays)
         {
             instrumentId = "$" + instrumentId.Replace("$", "");
             return InstrumentTweetsCache.Where(i => i.InstrumentId == instrumentId).
                 SelectMany(i => i.Tweets.Where(t => InThePastDays(t, numberOfDays)));
         }
 
-        public override IEnumerable<InstrumentTweets> GetInstrumentFeeds(IEnumerable<string> instrumentIds, int numberOfDays = NumberOfDays)
+        public IEnumerable<InstrumentTweets> GetInstrumentFeeds(IEnumerable<string> instrumentIds, int numberOfDays = NumberOfDays)
         {
             return InstrumentTweetsCache.Where(i => instrumentIds.Contains(i.InstrumentId)).Select(i => new InstrumentTweets
             {
@@ -48,22 +47,20 @@ namespace ulbuzz.core.services
 
         private IEnumerable<InstrumentTweets> GetInstrumentFeedsCore(IEnumerable<string> instrumentIds, int numberOfDays = NumberOfDays)
         {
-            var list = new List<InstrumentTweets>();
+            var its = new List<InstrumentTweets>();
 
             foreach (var instrumentId in instrumentIds)
             {
                 var it = new InstrumentTweets();
-
                 it.InstrumentId = instrumentId;
                 it.Tweets = GetTweetsCore(instrumentId, numberOfDays);
-
-                list.Add(it);
+                its.Add(it);
             }
 
-            return list;
+            return its;
         }
 
-        private void LoadCache(IEnumerable<string> instrumentIds = null, bool useDefaultInstruments = true, int numberOfDays = NumberOfDays)
+        public void LoadCache(IEnumerable<string> instrumentIds = null, bool useDefaultInstruments = true, int numberOfDays = NumberOfDays)
         {
             if (!useDefaultInstruments && instrumentIds == null)
                 throw new ArgumentNullException("instrumentIds");
