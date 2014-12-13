@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using LinqToTwitter;
 using StockTweetsApp.Command;
+using StockTweetsApp.Model;
 using StockTweetsApp.Repository;
 
 namespace StockTweetsApp.ViewModel

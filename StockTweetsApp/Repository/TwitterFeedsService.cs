@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using LinqToTwitter;
 using StockTweetsApp.Model;
-using StockTweetsApp.ViewModel;
 
 namespace StockTweetsApp.Repository
 {
@@ -15,7 +14,7 @@ namespace StockTweetsApp.Repository
         private readonly Dictionary<string, ulong> _sinceIds = new Dictionary<string, ulong>();
         public IEnumerable<InstrumentTweets> InstrumentTweetsCache = new List<InstrumentTweets>();
 
-        public IEnumerable<string> DefaultIntruments = new List<string> { "$BNP", "$VOD", "$AAPL", "$MSFT" };
+        public readonly IEnumerable<string> DefaultIntruments = new List<string> { "$BNP", "$VOD", "$AAPL", "$MSFT" };
 
         private const int NumberOfDays = 2;
 
@@ -81,7 +80,7 @@ namespace StockTweetsApp.Repository
 
             ulong maxId = 0;
 
-            List<Tweet> tweets = null;
+            List<Tweet> tweets;
             try
             {
                 Search userStatusResponse;
@@ -141,6 +140,7 @@ namespace StockTweetsApp.Repository
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+                throw;
             }
             return tweets;
         }
