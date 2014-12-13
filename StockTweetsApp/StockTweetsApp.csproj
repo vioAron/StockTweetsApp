@@ -85,13 +85,12 @@
     <Compile Include="Command\SearchManyTweetsClickedCommand.cs" />
     <Compile Include="Model\InstrumentTweets.cs" />
     <Compile Include="Repository\TwitterFeedsService.cs" />
-    <Compile Include="ViewModel\PopularInstrumentsViewModel.cs" />
     <Compile Include="ViewModel\WatchedInstrumentsViewModel.cs" />
     <Compile Include="View\PopularInstrumentsWindow.xaml.cs">
       <DependentUpon>PopularInstrumentsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SharedState.cs" />
-    <Compile Include="ViewModel\Tweet.cs" />
+    <Compile Include="Model\Tweet.cs" />
     <Compile Include="ViewModel\TweetsViewModel.cs" />
     <Compile Include="View\WatchedInstruments.xaml.cs">
       <DependentUpon>WatchedInstruments.xaml</DependentUpon>

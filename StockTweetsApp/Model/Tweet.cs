@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StockTweetsApp.ViewModel
+namespace StockTweetsApp.Model
 {
     public class Tweet
     {
