@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using LinqToTwitter;
 using StockTweetsApp.Model;
@@ -44,33 +45,45 @@ namespace StockTweetsApp.Repository
             });
         }
 
-        private IEnumerable<InstrumentTweets> GetInstrumentFeedsCore(IEnumerable<string> instrumentIds, int numberOfDays = NumberOfDays)
+        private IEnumerable<InstrumentTweets> GetInstrumentFeedsCore(IEnumerable<string> instrumentIds, CancellationToken token, int numberOfDays = NumberOfDays)
         {
             var its = new List<InstrumentTweets>();
 
             foreach (var instrumentId in instrumentIds)
             {
-                var it = new InstrumentTweets();
-                it.InstrumentId = instrumentId;
-                it.Tweets = GetTweetsCore(instrumentId, numberOfDays);
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
+                var it = new InstrumentTweets
+                {
+                    InstrumentId = instrumentId,
+                    Tweets = GetTweetsCore(instrumentId, numberOfDays)
+                };
                 its.Add(it);
             }
 
             return its;
         }
 
-        public void LoadCache(IEnumerable<string> instrumentIds = null, bool useDefaultInstruments = true, int numberOfDays = NumberOfDays)
+        public void LoadCache(CancellationToken token, IEnumerable<string> instrumentIds = null, bool useDefaultInstruments = true, int numberOfDays = NumberOfDays)
         {
             if (!useDefaultInstruments && instrumentIds == null)
                 throw new ArgumentNullException("instrumentIds");
 
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             if (useDefaultInstruments)
             {
-                InstrumentTweetsCache = GetInstrumentFeedsCore(DefaultIntruments, numberOfDays);
+                InstrumentTweetsCache = GetInstrumentFeedsCore(DefaultIntruments, token, numberOfDays);
             }
             else
             {
-                InstrumentTweetsCache = GetInstrumentFeedsCore(instrumentIds, numberOfDays);
+                InstrumentTweetsCache = GetInstrumentFeedsCore(instrumentIds, token, numberOfDays);
             }
         }
 
