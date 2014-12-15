@@ -5,6 +5,6 @@ namespace StockTweetsApp.Model
     public class InstrumentTweets
     {
         public string InstrumentId { get; set; }
-        public IEnumerable<Tweet> Tweets { get; set; }
+        public IList<Tweet> Tweets { get; set; }
     }
 }

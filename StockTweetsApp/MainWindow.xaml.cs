@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -43,6 +44,10 @@ namespace StockTweetsApp
             {
                 await Task.Factory.StartNew(() => TwitterFeedsService.Instance.LoadCache(token),
                        TaskCreationOptions.LongRunning);
+                Observable.Timer(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30)).Subscribe(time =>
+                {
+                    TwitterFeedsService.Instance.SyncCache();
+                });
             }
             catch (Exception ex)
             {

@@ -17,7 +17,7 @@ namespace StockTweetsApp.Repository
 
         public readonly IEnumerable<string> DefaultIntruments = new List<string> { "$BNP", "$VOD", "$AAPL", "$MSFT" };
 
-        private const int NumberOfDays = 2;
+        private const int NumberOfDays = 1;
 
         public TwitterFeedsService()
         {
@@ -41,7 +41,7 @@ namespace StockTweetsApp.Repository
             return InstrumentTweetsCache.Where(i => instrumentIds.Contains(i.InstrumentId)).Select(i => new InstrumentTweets
             {
                 InstrumentId = i.InstrumentId,
-                Tweets = i.Tweets.Where(t => InThePastDays(t, numberOfDays))
+                Tweets = i.Tweets.Where(t => InThePastDays(t, numberOfDays)).ToList()
             });
         }
 
@@ -59,7 +59,7 @@ namespace StockTweetsApp.Repository
                 var it = new InstrumentTweets
                 {
                     InstrumentId = instrumentId,
-                    Tweets = GetTweetsCore(instrumentId, numberOfDays)
+                    Tweets = GetTweetsCore(instrumentId, numberOfDays).ToList()
                 };
                 its.Add(it);
             }
@@ -85,6 +85,23 @@ namespace StockTweetsApp.Repository
             {
                 InstrumentTweetsCache = GetInstrumentFeedsCore(instrumentIds, token, numberOfDays);
             }
+        }
+
+        public void SyncCache()
+        {
+            foreach (var instrumentId in DefaultIntruments)
+            {
+                var newTweets = GetNewTweets(instrumentId);
+                foreach (var newTweet in newTweets)
+                {
+                    InstrumentTweetsCache.First(it => it.InstrumentId == instrumentId).Tweets.Add(newTweet);
+                }
+            }
+        }
+
+        private void SyncInstrumentsFeeds()
+        {
+            throw new NotImplementedException();
         }
 
         private IEnumerable<Tweet> GetTweetsCore(string instrumentId, int numberOfDays = NumberOfDays)
@@ -155,6 +172,53 @@ namespace StockTweetsApp.Repository
                 MessageBox.Show(ex.ToString());
                 throw;
             }
+            return tweets;
+        }
+
+        private IEnumerable<Tweet> GetNewTweets(string instrumentId, int numberOfDays = NumberOfDays)
+        {
+            var statuses = new List<Status>();
+
+            List<Tweet> tweets;
+            try
+            {
+                Search userStatusResponse;
+
+                if (_sinceIds.ContainsKey(instrumentId))
+                {
+                    var sinceId = _sinceIds[instrumentId];
+                    userStatusResponse = (from search in _twitterCtx.Search
+                                          where search.Type == SearchType.Search &&
+                                                search.Query == instrumentId &&
+                                                search.Count == 100 &&
+                                                search.SinceID == sinceId &&
+                                                search.ResultType == ResultType.Recent
+                                          select search
+                        ).SingleOrDefault();
+
+                    if (userStatusResponse == null || userStatusResponse.Statuses == null || userStatusResponse.Statuses.Count == 0)
+                        return Enumerable.Empty<Tweet>();
+
+                    var newSinceId = userStatusResponse.Statuses.Max(search => search.StatusID);
+                    _sinceIds[instrumentId] = newSinceId;
+                    statuses.AddRange(userStatusResponse.Statuses);
+                }
+
+                tweets = statuses.Select(status => new Tweet
+                {
+                    Id = status.StatusID,
+                    CreatedAt = status.CreatedAt,
+                    Message = status.Text,
+                    UserName = status.User.ScreenNameResponse,
+                    RetweetedCount = status.RetweetCount
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                throw;
+            }
+
             return tweets;
         }
 
