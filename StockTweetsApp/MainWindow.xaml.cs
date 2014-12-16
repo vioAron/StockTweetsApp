@@ -79,5 +79,11 @@ namespace StockTweetsApp
 
             base.OnClosed(e);
         }
+
+        private void InstrumentTweetsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var w = new InstrumentTweetsWindow();
+            w.Show();
+        }
     }
 }

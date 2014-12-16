@@ -81,21 +81,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\LoadInstrumentTweetsClickedCommand.cs" />
     <Compile Include="Command\SearchInstrumentsClickedCommand.cs" />
     <Compile Include="Command\SearchManyTweetsClickedCommand.cs" />
     <Compile Include="Model\InstrumentTweets.cs" />
     <Compile Include="Repository\TwitterFeedsService.cs" />
+    <Compile Include="ViewModel\InstrumentTweetsViewModel.cs" />
     <Compile Include="ViewModel\WatchedInstrumentsViewModel.cs" />
-    <Compile Include="View\PopularInstrumentsWindow.xaml.cs">
-      <DependentUpon>PopularInstrumentsWindow.xaml</DependentUpon>
+    <Compile Include="View\InstrumentTweetsWindow.xaml.cs">
+      <DependentUpon>InstrumentTweetsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SharedState.cs" />
+    <Compile Include="Repository\SharedState.cs" />
     <Compile Include="Model\Tweet.cs" />
     <Compile Include="ViewModel\TweetsViewModel.cs" />
     <Compile Include="View\WatchedInstruments.xaml.cs">
       <DependentUpon>WatchedInstruments.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\PopularInstrumentsWindow.xaml">
+    <Page Include="View\InstrumentTweetsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -99,11 +99,6 @@ namespace StockTweetsApp.Repository
             }
         }
 
-        private void SyncInstrumentsFeeds()
-        {
-            throw new NotImplementedException();
-        }
-
         private IEnumerable<Tweet> GetTweetsCore(string instrumentId, int numberOfDays = NumberOfDays)
         {
             var statuses = new List<Status>();
@@ -182,26 +177,32 @@ namespace StockTweetsApp.Repository
             List<Tweet> tweets;
             try
             {
-                Search userStatusResponse;
-
                 if (_sinceIds.ContainsKey(instrumentId))
                 {
-                    var sinceId = _sinceIds[instrumentId];
-                    userStatusResponse = (from search in _twitterCtx.Search
-                                          where search.Type == SearchType.Search &&
-                                                search.Query == instrumentId &&
-                                                search.Count == 100 &&
-                                                search.SinceID == sinceId &&
-                                                search.ResultType == ResultType.Recent
-                                          select search
-                        ).SingleOrDefault();
+                    Search userStatusResponse;
+                    do
+                    {
+                        var sinceId = _sinceIds[instrumentId];
+                        userStatusResponse = (from search in _twitterCtx.Search
+                                              where search.Type == SearchType.Search &&
+                                                    search.Query == instrumentId &&
+                                                    search.Count == 100 &&
+                                                    search.SinceID == sinceId &&
+                                                    search.ResultType == ResultType.Recent
+                                              select search
+                            ).SingleOrDefault();
 
-                    if (userStatusResponse == null || userStatusResponse.Statuses == null || userStatusResponse.Statuses.Count == 0)
-                        return Enumerable.Empty<Tweet>();
+                        if (userStatusResponse == null || userStatusResponse.Statuses == null || userStatusResponse.Statuses.Count == 0)
+                            return Enumerable.Empty<Tweet>();
 
-                    var newSinceId = userStatusResponse.Statuses.Max(search => search.StatusID);
-                    _sinceIds[instrumentId] = newSinceId;
-                    statuses.AddRange(userStatusResponse.Statuses);
+                        if (!InThePastDays(userStatusResponse.Statuses.First(), numberOfDays))
+                            break;
+
+                        var newSinceId = userStatusResponse.Statuses.Max(search => search.StatusID);
+                        _sinceIds[instrumentId] = newSinceId;
+                        statuses.AddRange(userStatusResponse.Statuses);
+
+                    } while (userStatusResponse.Statuses.Count >= 100);
                 }
 
                 tweets = statuses.Select(status => new Tweet

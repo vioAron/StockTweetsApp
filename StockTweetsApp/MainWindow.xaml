@@ -6,6 +6,7 @@
     <Grid>
         <StackPanel>
             <Button Content="WatchedInstruments" Width="150" Name="WatchedInstrumentsButton" Click="WatchedInstrumentsButton_OnClick"/>
+            <Button Content="InstrumentTweets" Width="150" Name="InstrumentTweetsButton" Click="InstrumentTweetsButton_OnClick"/>
             <Button Content="Cancel cache loading..." Width="150" Name="CancelCacheButton" Click="CancelCacheButton_OnClick"></Button>
         </StackPanel>
     </Grid>
