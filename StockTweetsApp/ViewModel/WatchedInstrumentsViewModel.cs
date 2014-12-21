@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -54,10 +55,7 @@ namespace StockTweetsApp.ViewModel
         {
             Tweets.Clear();
 
-            foreach (var tweet in TwitterFeedsService.Instance.GetTweets(SearchText))
-            {
-                Tweets.Add(tweet);
-            }
+            TwitterFeedsService.Instance.GetTweets(SearchText).Subscribe(t => Tweets.Add(t));
         }
     }
 }

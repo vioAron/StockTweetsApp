@@ -13,6 +13,7 @@ namespace StockTweetsApp.Model
         public string Message { get; set; }
 
         public int RetweetedCount { get; set; }
+
         public string ImageSource { get; set; }
     }
 }

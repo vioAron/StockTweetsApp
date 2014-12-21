@@ -29,20 +29,11 @@ namespace StockTweetsApp.Repository
             get { return _lazyInstance.Value; }
         }
 
-        public IEnumerable<Tweet> GetTweets(string instrumentId, int numberOfDays = NumberOfDays)
+        public IObservable<Tweet> GetTweets(string instrumentId, int numberOfDays = NumberOfDays)
         {
             instrumentId = "$" + instrumentId.Replace("$", "");
-            return InstrumentTweetsCache.Where(i => i.InstrumentId == instrumentId).
-                SelectMany(i => i.Tweets.Where(t => InThePastDays(t, numberOfDays)));
-        }
-
-        public IEnumerable<InstrumentTweets> GetInstrumentFeeds(IEnumerable<string> instrumentIds, int numberOfDays = NumberOfDays)
-        {
-            return InstrumentTweetsCache.Where(i => instrumentIds.Contains(i.InstrumentId)).Select(i => new InstrumentTweets
-            {
-                InstrumentId = i.InstrumentId,
-                Tweets = i.Tweets.Where(t => InThePastDays(t, numberOfDays)).ToList()
-            });
+            var iit = InstrumentTweetsCache.First(i => i.InstrumentId == instrumentId);
+            return iit.Tweets;
         }
 
         private IEnumerable<InstrumentTweets> GetInstrumentFeedsCore(IEnumerable<string> instrumentIds, CancellationToken token, int numberOfDays = NumberOfDays)
@@ -59,8 +50,8 @@ namespace StockTweetsApp.Repository
                 var it = new InstrumentTweets
                 {
                     InstrumentId = instrumentId,
-                    Tweets = GetTweetsCore(instrumentId, numberOfDays).ToList()
                 };
+                it.AddRange(GetTweetsCore(instrumentId, numberOfDays));
                 its.Add(it);
             }
 
@@ -94,7 +85,7 @@ namespace StockTweetsApp.Repository
                 var newTweets = GetNewTweets(instrumentId);
                 foreach (var newTweet in newTweets)
                 {
-                    InstrumentTweetsCache.First(it => it.InstrumentId == instrumentId).Tweets.Add(newTweet);
+                    InstrumentTweetsCache.First(it => it.InstrumentId == instrumentId).Add(newTweet);
                 }
             }
         }
@@ -231,6 +222,7 @@ namespace StockTweetsApp.Repository
             return (DateTime.Now.Date - tweet.CreatedAt.Date).TotalDays < numberOfDays;
         }
 
+/*
         private static bool InThePastDays(Tweet tweet, int numberOfDays)
         {
             if (tweet == null)
@@ -238,5 +230,6 @@ namespace StockTweetsApp.Repository
 
             return (DateTime.Now.Date - tweet.CreatedAt.Date).TotalDays < numberOfDays;
         }
+*/
     }
 }

@@ -40,10 +40,7 @@ namespace StockTweetsApp.ViewModel
         {
             Tweets.Clear();
 
-            foreach (var tweet in TwitterFeedsService.Instance.GetTweets(SearchText))
-            {
-                Tweets.Add(tweet);
-            }
+            TwitterFeedsService.Instance.GetTweets(SearchText).Subscribe(t => Tweets.Add(t));
         }
     }
 }

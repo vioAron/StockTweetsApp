@@ -1,6 +1,6 @@
 ﻿using LinqToTwitter;
 
-namespace StockTweetsApp
+namespace StockTweetsApp.Repository
 {
     public class SharedState
     {
