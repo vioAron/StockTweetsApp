@@ -7,13 +7,13 @@ namespace StockTweetsApp.Model
 {
     public class InstrumentTweets
     {
-        private readonly Subject<Tweet> _subjectTweets = new Subject<Tweet>(); 
+        private readonly ReplaySubject<Tweet> _subjectTweets = new ReplaySubject<Tweet>(); 
 
         public string InstrumentId { get; set; }
 
-        public IObservable<Tweet> Tweets
+        public IConnectableObservable<Tweet> Tweets
         {
-            get { return _subjectTweets.AsObservable(); }
+            get { return _subjectTweets.Replay(); }
         }
 
         public void Add(Tweet newTweet)

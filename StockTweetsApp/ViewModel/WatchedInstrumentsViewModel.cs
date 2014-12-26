@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using LinqToTwitter;
@@ -55,7 +56,10 @@ namespace StockTweetsApp.ViewModel
         {
             Tweets.Clear();
 
-            TwitterFeedsService.Instance.GetTweets(SearchText).Subscribe(t => Tweets.Add(t));
+            var observable = TwitterFeedsService.Instance.GetTweets(SearchText);
+
+            observable.Connect();
+            observable.ObserveOnDispatcher().Subscribe(t => Tweets.Add(t));
         }
     }
 }
