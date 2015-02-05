@@ -4,7 +4,7 @@
         xmlns:viewModel="clr-namespace:StockTweetsApp.ViewModel"
         Title="InstrumentTweetsWindow" Height="689.4" Width="480">
     <Window.DataContext>
-        <viewModel:InstrumentTweetsViewModel/>
+        <viewModel:InstrumentTweetsViewModel x:Name="Model"/>
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
@@ -13,11 +13,7 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
             <TextBox Name="txtSearch" Height="20" Text="{Binding SearchText}"/>
-            <StackPanel Orientation="Horizontal">
-                <Button Name="LoadButton" Height="20" Width="90" Content="Load" Command="{Binding LoadInstrumentTweetsClickedCommand}" CommandParameter="{Binding}" />
-            </StackPanel>
         </StackPanel>
-        <DataGrid Grid.Row="1" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="5" VerticalAlignment="Stretch" ItemsSource="{Binding Tweets}">
-        </DataGrid>
+        <DataGrid Grid.Row="1" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="5" VerticalAlignment="Stretch" ItemsSource="{Binding Tweets}" />
     </Grid>
 </Window>
