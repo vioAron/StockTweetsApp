@@ -88,6 +88,7 @@
     <Compile Include="Command\SearchInstrumentsClickedCommand.cs" />
     <Compile Include="Command\SearchManyTweetsClickedCommand.cs" />
     <Compile Include="Model\InstrumentTweets.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Repository\TwitterFeedsService.cs" />
     <Compile Include="ViewModel\InstrumentTweetsViewModel.cs" />
     <Compile Include="ViewModel\WatchedInstrumentsViewModel.cs" />

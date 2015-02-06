@@ -22,13 +22,15 @@ namespace StockTweetsApp.View
             var textChangedObservable = Observable.FromEventPattern<TextChangedEventHandler, TextChangedEventArgs>(
                 ev => txtSearch.TextChanged += ev, ev => txtSearch.TextChanged -= ev);
 
-            textChangedObservable.Select(ep => ((TextBox)ep.Sender).Text).Throttle(TimeSpan.FromSeconds(5)).DistinctUntilChanged().ObserveOnDispatcher().Subscribe(
+            textChangedObservable.Select(ep => ((TextBox)ep.Sender).Text).Throttle(TimeSpan.FromSeconds(2)).DistinctUntilChanged().ObserveOnDispatcher().Subscribe(
                 args =>
                 {
                     Model.Tweets.Clear();
                     var resultObservable = Repository.TwitterFeedsService.Instance.GetTweets2(args);
                     resultObservable.TakeUntil(textChangedObservable).ObserveOn(_uiScheduler).Subscribe(result => Model.Tweets.Add(result));
                 });
+
+            Model.SearchText = "$AAPL";
         }
     }
 }
