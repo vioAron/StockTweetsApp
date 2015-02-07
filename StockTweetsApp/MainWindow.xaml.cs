@@ -44,10 +44,7 @@ namespace StockTweetsApp
             {
                 await Task.Factory.StartNew(() => TwitterFeedsService.Instance.LoadCache(token),
                        TaskCreationOptions.LongRunning);
-                Observable.Timer(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30)).Subscribe(time =>
-                {
-                    TwitterFeedsService.Instance.SyncCache();
-                });
+                Observable.Timer(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30)).Subscribe(time => TwitterFeedsService.Instance.SyncCache());
             }
             catch (Exception ex)
             {

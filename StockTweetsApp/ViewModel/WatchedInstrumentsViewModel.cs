@@ -13,11 +13,14 @@ namespace StockTweetsApp.ViewModel
 {
     public class WatchedInstrumentsViewModel
     {
-        public ObservableCollection<Tweet> Tweets { get; set; }
-
         private readonly TwitterContext _twitterCtx;
 
-        public string SearchText { get; set; }
+        public WatchedInstrumentsViewModel()
+        {
+            SearchText = "$AAPL";
+            Tweets = new ObservableCollection<Tweet>();
+            _twitterCtx = new TwitterContext(SharedState.Authorizer);
+        }
 
         public ICommand SearchInstrumentsClickedCommand
         {
@@ -29,12 +32,9 @@ namespace StockTweetsApp.ViewModel
             get { return new SearchManyTweetsClickedCommand(); }
         }
 
-        public WatchedInstrumentsViewModel()
-        {
-            SearchText = "$AAPL";
-            Tweets = new ObservableCollection<Tweet>();
-            _twitterCtx = new TwitterContext(SharedState.Authorizer);
-        }
+        public string SearchText { get; set; }
+
+        public ObservableCollection<Tweet> Tweets { get; set; }
 
         public async Task Search()
         {

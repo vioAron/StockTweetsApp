@@ -16,7 +16,17 @@ namespace StockTweetsApp.ViewModel
     public class InstrumentTweetsViewModel : INotifyPropertyChanged
     {
         private string _searchText;
-        public ObservableCollection<Tweet> Tweets { get; set; }
+        public InstrumentTweetsViewModel()
+        {
+            Tweets = new ObservableCollection<Tweet>();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public ICommand LoadInstrumentTweetsClickedCommand
+        {
+            get { return new LoadInstrumentTweetsClickedCommand(); }
+        }
 
         public string SearchText
         {
@@ -29,16 +39,7 @@ namespace StockTweetsApp.ViewModel
             }
         }
 
-        public InstrumentTweetsViewModel()
-        {
-            Tweets = new ObservableCollection<Tweet>();
-        }
-
-        public ICommand LoadInstrumentTweetsClickedCommand
-        {
-            get { return new LoadInstrumentTweetsClickedCommand(); }
-        }
-
+        public ObservableCollection<Tweet> Tweets { get; set; }
         public void Load()
         {
             BindInstruments();
@@ -48,6 +49,13 @@ namespace StockTweetsApp.ViewModel
                 Subscribe(n => BindInstruments());
         }
 
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private void BindInstruments()
         {
             Tweets.Clear();
@@ -55,15 +63,6 @@ namespace StockTweetsApp.ViewModel
             var observable = TwitterFeedsService.Instance.GetTweets(SearchText).Replay();
             
             observable.Subscribe(t => Tweets.Add(t));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
