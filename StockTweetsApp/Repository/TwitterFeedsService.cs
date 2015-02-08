@@ -6,6 +6,7 @@ using System.Reactive.Subjects;
 using System.Threading;
 using System.Windows;
 using LinqToTwitter;
+using log4net;
 using StockTweetsApp.Model;
 
 namespace StockTweetsApp.Repository
@@ -19,9 +20,13 @@ namespace StockTweetsApp.Repository
         private readonly Dictionary<string, ulong> _sinceIds = new Dictionary<string, ulong>();
         private readonly TwitterContext _twitterCtx;
 
+        private static readonly ILog Log = LogManager.GetLogger(typeof(TwitterFeedsService));
+
         public TwitterFeedsService()
         {
             _twitterCtx = new TwitterContext(SharedState.Authorizer);
+
+            Log.Info("TwitterFeedsService class has been created!");
         }
 
         public static TwitterFeedsService Instance
@@ -45,7 +50,8 @@ namespace StockTweetsApp.Repository
             return iit.Tweets2;
         }
 
-        public void LoadCache(CancellationToken token, IEnumerable<string> instrumentIds = null, bool useDefaultInstruments = true, int numberOfDays = NumberOfDays)
+        public void LoadCache(CancellationToken token, IEnumerable<string> instrumentIds = null,
+            bool useDefaultInstruments = true, int numberOfDays = NumberOfDays)
         {
             if (!useDefaultInstruments && instrumentIds == null)
                 throw new ArgumentNullException("instrumentIds");
@@ -85,7 +91,8 @@ namespace StockTweetsApp.Repository
             return (DateTime.Now.Date - tweet.CreatedAt.Date).TotalDays < numberOfDays;
         }
 
-        private IEnumerable<InstrumentTweets> GetInstrumentFeedsCore(IEnumerable<string> instrumentIds, CancellationToken token, int numberOfDays = NumberOfDays)
+        private IEnumerable<InstrumentTweets> GetInstrumentFeedsCore(IEnumerable<string> instrumentIds,
+            CancellationToken token, int numberOfDays = NumberOfDays)
         {
             var its = new List<InstrumentTweets>();
 
@@ -109,6 +116,8 @@ namespace StockTweetsApp.Repository
 
         private IEnumerable<Tweet> GetNewTweets(string instrumentId, int numberOfDays = NumberOfDays)
         {
+            Log.InfoFormat("Get new tweets for {0}", instrumentId);
+
             var statuses = new List<Status>();
 
             List<Tweet> tweets;
@@ -129,7 +138,8 @@ namespace StockTweetsApp.Repository
                                               select search
                             ).SingleOrDefault();
 
-                        if (userStatusResponse == null || userStatusResponse.Statuses == null || userStatusResponse.Statuses.Count == 0)
+                        if (userStatusResponse == null || userStatusResponse.Statuses == null
+                            || userStatusResponse.Statuses.Count == 0)
                             return Enumerable.Empty<Tweet>();
 
                         if (!InThePastDays(userStatusResponse.Statuses.First(), numberOfDays))
@@ -162,6 +172,7 @@ namespace StockTweetsApp.Repository
 
         private IEnumerable<Tweet> GetTweetsCore(string instrumentId, int numberOfDays = NumberOfDays)
         {
+            Log.InfoFormat("Snapshot tweets for {0}", instrumentId);
             var statuses = new List<Status>();
 
             ulong maxId = 0;

@@ -6,6 +6,8 @@ namespace StockTweetsApp.Command
 {
     public class LoadInstrumentTweetsClickedCommand : ICommand
     {
+        public event EventHandler CanExecuteChanged;
+
         public bool CanExecute(object parameter)
         {
             return true;
@@ -15,7 +17,5 @@ namespace StockTweetsApp.Command
         {
             ((InstrumentTweetsViewModel) parameter).Load();
         }
-
-        public event EventHandler CanExecuteChanged;
     }
 }
