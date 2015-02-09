@@ -56,9 +56,8 @@ namespace StockTweetsApp.ViewModel
         {
             Tweets.Clear();
 
-            var observable = TwitterFeedsService.Instance.GetTweets(SearchText);
+            var observable = TwitterFeedsService.Instance.GetTweetsObservable(SearchText);
 
-            observable.Connect();
             observable.ObserveOnDispatcher().Subscribe(t => Tweets.Add(t));
         }
     }

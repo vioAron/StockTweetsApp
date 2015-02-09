@@ -60,8 +60,8 @@ namespace StockTweetsApp.ViewModel
         {
             Tweets.Clear();
 
-            var observable = TwitterFeedsService.Instance.GetTweets(SearchText).Replay();
-            
+            var observable = TwitterFeedsService.Instance.GetTweetsObservable(SearchText);
+
             observable.Subscribe(t => Tweets.Add(t));
         }
     }

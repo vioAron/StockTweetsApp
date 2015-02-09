@@ -26,7 +26,7 @@ namespace StockTweetsApp.View
                 args =>
                 {
                     Model.Tweets.Clear();
-                    var resultObservable = Repository.TwitterFeedsService.Instance.GetTweets2(args);
+                    var resultObservable = Repository.TwitterFeedsService.Instance.GetTweetsObservable(args);
                     resultObservable.TakeUntil(textChangedObservable).ObserveOn(_uiScheduler).Subscribe(result => Model.Tweets.Add(result));
                 });
 

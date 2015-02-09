@@ -11,14 +11,12 @@ namespace StockTweetsApp.Model
 
         public string InstrumentId { get; set; }
 
-        public IConnectableObservable<Tweet> Tweets
+        public IObservable<Tweet> TweetsObservable
         {
-            get { return _subjectTweets.Replay(); }
-        }
-
-        public IObservable<Tweet> Tweets2
-        {
-            get { return _subjectTweets; }
+            get
+            {
+                return _subjectTweets;
+            }
         }
 
         public void Add(Tweet newTweet)

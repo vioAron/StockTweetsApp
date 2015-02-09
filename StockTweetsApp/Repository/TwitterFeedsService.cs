@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Threading;
 using System.Windows;
 using LinqToTwitter;
@@ -34,20 +33,13 @@ namespace StockTweetsApp.Repository
             get { return _lazyInstance.Value; }
         }
 
-        public IConnectableObservable<Tweet> GetTweets(string instrumentId, int numberOfDays = NumberOfDays)
-        {
-            instrumentId = "$" + instrumentId.Replace("$", string.Empty);
-            var iit = InstrumentTweetsCache.First(i => i.InstrumentId == instrumentId);
-            return iit.Tweets;
-        }
-
-        public IObservable<Tweet> GetTweets2(string instrumentId, int numberOfDays = NumberOfDays)
+        public IObservable<Tweet> GetTweetsObservable(string instrumentId, int numberOfDays = NumberOfDays)
         {
             instrumentId = "$" + instrumentId.Replace("$", string.Empty);
             var iit = InstrumentTweetsCache.FirstOrDefault(i => i.InstrumentId == instrumentId);
             if (iit == null)
                 return Observable.Empty<Tweet>();
-            return iit.Tweets2;
+            return iit.TweetsObservable;
         }
 
         public void LoadCache(CancellationToken token, IEnumerable<string> instrumentIds = null,
